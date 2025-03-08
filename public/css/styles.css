@@ -1,6 +1,327 @@
-/******* Change Box Model ***************/
-*,
-*:before,
-*:after {
+/* ========== Reset and Base Styles ========== */
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* 
+  .outer-check holds the checkerboard background,
+  while #wrapper is the white content area with a blue border.
+*/
+.outer-check {
+  min-height: 100vh;
+  background: url("/images/site/checkerboard.jpg") repeat;
+  padding: 1rem;
+}
+
+#wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 1rem;
+  border: 5px solid #3498db; /* Blue border */
+}
+
+/* ========== Header ========== */
+header#top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+header .siteName a {
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: #2c3e50;
+}
+
+#tools a {
+  text-decoration: none;
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+/* ========== Navigation ========== */
+nav {
+  background-color: #3498db;
+  margin-bottom: 1rem;
+}
+
+/* Mobile Navigation: vertical layout */
+@media screen and (max-width: 767px) {
+  nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+  nav ul li {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 0.5rem;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Desktop Navigation: horizontal layout */
+@media screen and (min-width: 768px) {
+  nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+  nav ul li {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #fff;
+}
+
+/* ========== Main Content ========== */
+h1 {
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+/* ========== Featured Car Section with Overlay ========== */
+#featured-car {
+  position: relative;
+}
+
+#featured-car .delorean-image {
+  position: relative;
+}
+
+#featured-car .delorean-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Overlay positioned over the bottom of the image */
+#featured-car .overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Faded background */
+  padding: 1rem;
+  text-align: center;
+}
+
+#featured-car .overlay .delorean-info h2 {
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+#featured-car .overlay .delorean-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+
+#featured-car .overlay .delorean-info ul li {
+  margin: 0.3rem 0;
+  color: #fff;
+}
+
+/* Own Today button now matches the blue border */
+#featured-car .overlay .btn-own {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #3498db;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+#featured-car .overlay .btn-own:hover {
+  background-color: #2980b9;
+}
+
+/* ========== Reviews and Upgrades Container ========== */
+#reviews-upgrades-container {
+  display: flex;
+  flex-direction: column; /* Stacked on mobile */
+  gap: 2rem;
+}
+
+/* ----- Delorean Upgrades (Left) ----- */
+#delorean-upgrades {
+  flex: 1;
+}
+
+#delorean-upgrades h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+#delorean-upgrades .upgrade-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Mobile: Figures arranged with flex-wrap */
+#delorean-upgrades figure {
+  flex: 1 1 45%; /* roughly 45% width */
+  max-width: 200px;
+  text-align: center;
+  background-color: #3498db; /* Blue background matching the border */
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+#delorean-upgrades figure img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border: none;
+  border-radius: 4px;
+}
+
+#delorean-upgrades figcaption {
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* ----- Delorean Reviews (Right) ----- */
+#delorean-reviews {
+  flex: 1;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#delorean-reviews h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+#delorean-reviews ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#delorean-reviews ul li {
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+/* ========== Footer ========== */
+/* Footer text at bottom left, no background */
+footer {
+  text-align: left;
+  padding: 0.5rem 0 0 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid #ccc;
+  background: none;
+}
+
+/* ========== Mobile-Specific Adjustments ========== */
+@media screen and (max-width: 767px) {
+  /* Navigation: vertical layout already set above */
+  
+  /* Featured Car Overlay adjustments for mobile */
+  #featured-car .overlay {
+    padding: 0.5rem;
+  }
+  
+  #featured-car .overlay .delorean-info h2 {
+    font-size: 1.3rem;
+  }
+  
+  #featured-car .overlay .delorean-info ul li {
+    font-size: 0.8rem;
+  }
+  
+  #featured-car .overlay .btn-own {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* ========== Media Query for Larger Screens (min-width: 768px) ========== */
+@media screen and (min-width: 768px) {
+  /* Navigation remains horizontal */
+  nav ul {
+    flex-direction: row;
+  }
+  
+  /* Reviews and Upgrades Container: side by side */
+  #reviews-upgrades-container {
+    flex-direction: row;
+    gap: 2rem;
+  }
+  
+  /* Each section takes 50% of the container */
+  #delorean-upgrades, 
+  #delorean-reviews {
+    width: 50%;
+  }
+  
+  /* Upgrades: Arrange in a grid of 2 columns and 2 rows */
+  #delorean-upgrades .upgrade-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    justify-items: center;
+  }
+  
+  #delorean-upgrades figure {
+    max-width: none;
+    width: 100%;
+    background-color: #3498db;
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+  
+  #delorean-upgrades figure img {
+    width: 100%;
+    height: 200px; /* Increased height for larger screens */
+    object-fit: cover;
+    border: none;
+    border-radius: 4px;
+  }
 }

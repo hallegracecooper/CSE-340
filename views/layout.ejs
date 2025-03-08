@@ -1,0 +1,20 @@
+<!-- views/layout.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/head') %>
+  <body>
+    <!-- New outer-check container for checkerboard background -->
+    <div class="outer-check">
+      <div id="wrapper">
+        <%- include('partials/header') %>
+        <%- include('partials/navigation') %>
+
+        <main>
+          <%- body %>
+        </main>
+
+        <%- include('partials/footer') %>
+      </div>
+    </div>
+  </body>
+</html>
