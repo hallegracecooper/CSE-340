@@ -51,10 +51,39 @@ header .siteName a {
   font-weight: bold;
 }
 
-/* ========== Navigation ========== */
-nav {
-  background-color: #3498db;
-  margin-bottom: 1rem;
+/* Desktop styles for navigation */
+.main-nav {
+  list-style: none;
+  display: flex;           /* Arrange items in a row */
+  background-color: #333;
+  padding: 10px;
+  margin: 0;
+}
+
+.main-nav li {
+  margin-right: 20px;
+}
+
+.main-nav li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.main-nav li a:hover {
+  color: #ddd;
+}
+
+/* Mobile styles for navigation */
+@media screen and (max-width: 600px) {
+  .main-nav {
+    flex-direction: column;  /* Stack items vertically */
+    align-items: center;
+  }
+  
+  .main-nav li {
+    margin: 10px 0;  /* Adjust spacing for vertical layout */
+  }
 }
 
 /* Mobile Navigation: vertical layout */
