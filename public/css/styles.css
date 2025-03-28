@@ -353,4 +353,24 @@ footer {
     border: none;
     border-radius: 4px;
   }
+
+  /* Add to styles.css */
+
+.vehicle-detail-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.vehicle-image {
+  flex: 1 1 40%;
+}
+.vehicle-info {
+  flex: 1 1 55%;
+}
+@media screen and (max-width: 768px) {
+  .vehicle-detail-container {
+    flex-direction: column;
+  }
+}
+
 }

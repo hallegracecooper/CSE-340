@@ -61,5 +61,32 @@ Util.buildClassificationGrid = async function(data){
 Util.handleErrors = fn => (req, res, next) => 
     Promise.resolve(fn(req, res, next)).catch(next);
   
+// In utilities/index.js, add:
+Util.buildVehicleDetailHTML = async function(vehicle) {
+  // Format price and mileage using toLocaleString
+  const priceFormatted = Number(vehicle.inv_price)
+    .toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  const mileageFormatted = Number(vehicle.inv_mileage)
+    .toLocaleString('en-US');
+
+  // Return the HTML string (adjust keys as needed)
+  return `
+    <div class="vehicle-detail">
+      <h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>
+      <div class="vehicle-detail-container">
+        <div class="vehicle-image">
+          <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}">
+        </div>
+        <div class="vehicle-info">
+          <p><strong>Year:</strong> ${vehicle.inv_year}</p>
+          <p><strong>Price:</strong> ${priceFormatted}</p>
+          <p><strong>Mileage:</strong> ${mileageFormatted} miles</p>
+          <p><strong>Description:</strong> ${vehicle.inv_description}</p>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
 
   module.exports = Util
