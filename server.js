@@ -1,3 +1,5 @@
+// server.js
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -5,9 +7,35 @@ const expressLayouts = require('express-ejs-layouts');
 const baseController = require("./controllers/baseController");
 const inventoryRoute = require("./routes/inventoryRoute");
 const utilities = require("./utilities");
+const session = require("express-session");
+const pool = require('./database/');
+const accountRoute = require("./routes/accountRoute");
+const bodyParser = require("body-parser");
+
 
 // Set the port
 const port = process.env.PORT || 3000;
+
+/* ***********************
+ * Middleware
+ ************************/
+app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  name: 'sessionId',
+}));
+
+// Express Messages Middleware
+app.use(require('connect-flash')());
+app.use(function(req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
 
 // Set the view engine and views folder
 app.set('view engine', 'ejs');
@@ -20,16 +48,23 @@ app.set('layout', 'layout');  // This tells express-ejs-layouts to use views/lay
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome));
 
 // Inventory routes
 app.use("/inv", inventoryRoute);
 
-// File Not Found Route - must be last route in list
+// Account Route
+app.use("/account", accountRoute);
+
+// File Not Found Route - must be the last route in the list
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'});
 });
+
 
 /* ***********************
  * Express Error Handler

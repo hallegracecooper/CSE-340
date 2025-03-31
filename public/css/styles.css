@@ -373,4 +373,132 @@ footer {
   }
 }
 
+/* Example styling for the login form */
+.login-form {
+  background-color: #2c3e50;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 300px;
+  margin: 1rem auto;
+}
+
+.login-form label {
+  display: block;
+  margin-top: 1rem;
+  color: #ecf0f1;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-form button {
+  display: block;
+  margin: 1rem 0 0 0;
+  padding: 0.5rem 1rem;
+  background-color: #ecf0f1;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background-color: #bdc3c7;
+}
+
+.flash-message {
+  background-color: #f39c12;
+  color: #fff;
+  padding: 0.5rem;
+  margin: 1rem auto;
+  max-width: 300px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+/* register.css */
+
+/* Container styling similar to the login form */
+.register-form {
+  background-color: #2c3e50;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 300px;
+  margin: 1rem auto;
+  color: #ecf0f1;
+}
+
+/* Heading styling */
+.register-form h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Label styling */
+.register-form label {
+  display: block;
+  margin-top: 1rem;
+  color: #ecf0f1;
+}
+
+/* Input styling for text, email, and password fields */
+.register-form input[type="text"],
+.register-form input[type="email"],
+.register-form input[type="password"] {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Submit button styling */
+.register-form button {
+  display: block;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #ecf0f1;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.register-form button:hover {
+  background-color: #bdc3c7;
+}
+
+/* Flash message styling matching your login form */
+.flash-message {
+  background-color: #f39c12;
+  color: #fff;
+  padding: 0.5rem;
+  margin: 1rem auto;
+  max-width: 300px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+/* Toggle password container */
+.toggle-password {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Style the checkbox within the toggle */
+.toggle-password input[type="checkbox"] {
+  margin: 0;
+}
+
+/* Style the label for the toggle checkbox */
+.toggle-password label {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: #ecf0f1;
+}
+
 }
