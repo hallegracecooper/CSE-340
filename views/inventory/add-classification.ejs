@@ -1,0 +1,32 @@
+<!-- views/inventory/add-classification.ejs -->
+
+<h1>Add New Classification</h1>
+
+<!-- Display any flash messages from the controller -->
+<%- messages() %>
+
+<!-- Display server-side validation errors if present -->
+<% if (typeof errors !== 'undefined' && errors.array().length > 0) { %>
+  <ul class="notice">
+    <% errors.array().forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }); %>
+  </ul>
+<% } %>
+
+<!-- Form for adding a new classification -->
+<form action="/inv/add-classification" method="post" id="add-classification-form">
+  <label for="classification_name">Classification Name</label>
+  <input 
+    type="text" 
+    id="classification_name" 
+    name="classification_name" 
+    placeholder="Enter classification name"
+    required
+    pattern="^[A-Za-z0-9]+$"
+    title="Classification name must contain only letters and numbers with no spaces or special characters."
+  />
+  <p>Note: The classification name cannot contain spaces or special characters.</p>
+  
+  <button type="submit">Add Classification</button>
+</form>

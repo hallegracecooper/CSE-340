@@ -1,0 +1,27 @@
+<!-- views/inventory/management.ejs -->
+
+<!-- 
+  The title is passed in from the controller.
+  This view serves as the management page for inventory operations.
+-->
+<% if (title) { %>
+    <h1><%= title %></h1>
+  <% } else { %>
+    <h1>Inventory Management</h1>
+  <% } %>
+  
+  <!-- Display any flash messages sent from the controller -->
+  <%- messages() %>
+  
+  <!-- Navigation Links for further inventory management tasks -->
+  <nav>
+    <ul>
+      <li>
+        <a href="/inv/add-classification" title="Add a new classification">Add New Classification</a>
+      </li>
+      <li>
+        <a href="/inv/add-inventory" title="Add a new inventory item">Add New Inventory</a>
+      </li>
+    </ul>
+  </nav>
+  

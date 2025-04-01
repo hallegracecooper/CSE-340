@@ -1,20 +1,11 @@
 <!-- views/account/login.ejs -->
-<!-- 
-  Title and <h1> both use the title data from the controller.
-  This file displays a login form, plus a link to a registration page.
--->
 <h1><%= title %></h1>
 
-<!-- Flash or message area (optional). 
-     If you're using connect-flash or a similar library, 
-     you might do something like <%- messages() %> 
-     or check for a "message" variable. -->
-<% if (typeof message !== 'undefined') { %>
-  <p class="flash-message"><%= message %></p>
-<% } %>
+<!-- Display flash messages using the messages helper -->
+<%- messages() %>
 
-<!-- Display Validation Errors -->
-<% if (errors) { %>
+<!-- Display Validation Errors if errors variable exists and has content -->
+<% if (typeof errors !== 'undefined' && errors.array && errors.array().length > 0) { %>
   <ul class="notice">
     <% errors.array().forEach(error => { %>
       <li><%= error.msg %></li>
@@ -32,7 +23,7 @@
     name="account_email" 
     placeholder="Enter your email" 
     required
-    value="<%= locals.account_email %>"
+    value="<%= typeof locals !== 'undefined' && locals.account_email ? locals.account_email : '' %>"
   />
 
   <!-- Password Field -->

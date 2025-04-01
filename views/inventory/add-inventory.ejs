@@ -1,0 +1,124 @@
+<!-- views/inventory/add-inventory.ejs -->
+
+<h1>Add New Vehicle</h1>
+
+<!-- Display flash messages from the controller -->
+<%- messages() %>
+
+<!-- Display server-side validation errors, if any -->
+<% if (typeof errors !== 'undefined' && errors.array().length > 0) { %>
+  <ul class="notice">
+    <% errors.array().forEach(function(error) { %>
+      <li><%= error.msg %></li>
+    <% }); %>
+  </ul>
+<% } %>
+
+<!-- Form for adding a new vehicle to the inventory -->
+<form action="/inv/add-inventory" method="post" id="add-inventory-form">
+  
+  <!-- Classification Select List -->
+  <label for="classificationList">Classification</label>
+  <!-- The classificationList variable is dynamically built in the controller and passed to the view -->
+  <%- classificationList %>
+
+  <!-- Vehicle Make -->
+  <label for="inv_make">Make</label>
+  <input 
+    type="text" 
+    id="inv_make" 
+    name="inv_make" 
+    placeholder="Enter Vehicle Make" 
+    required 
+    value="<%= typeof inv_make !== 'undefined' ? inv_make : '' %>"
+  >
+
+  <!-- Vehicle Model -->
+  <label for="inv_model">Model</label>
+  <input 
+    type="text" 
+    id="inv_model" 
+    name="inv_model" 
+    placeholder="Enter Vehicle Model" 
+    required 
+    value="<%= typeof inv_model !== 'undefined' ? inv_model : '' %>"
+  >
+
+  <!-- Vehicle Description -->
+  <label for="inv_description">Description</label>
+  <textarea 
+    id="inv_description" 
+    name="inv_description" 
+    placeholder="Enter Vehicle Description" 
+    required
+  ><%= typeof inv_description !== 'undefined' ? inv_description : '' %></textarea>
+
+  <!-- Vehicle Image Path -->
+  <label for="inv_image">Image Path</label>
+  <input 
+    type="text" 
+    id="inv_image" 
+    name="inv_image" 
+    placeholder="Enter Image Path" 
+    required 
+    value="<%= typeof inv_image !== 'undefined' ? inv_image : '/images/vehicles/no-image-available.png' %>"
+  >
+
+  <!-- Vehicle Thumbnail Path -->
+  <label for="inv_thumbnail">Thumbnail Path</label>
+  <input 
+    type="text" 
+    id="inv_thumbnail" 
+    name="inv_thumbnail" 
+    placeholder="Enter Thumbnail Path" 
+    required 
+    value="<%= typeof inv_thumbnail !== 'undefined' ? inv_thumbnail : '/images/vehicles/no-image-available.png' %>"
+  >
+
+  <!-- Vehicle Price -->
+  <label for="inv_price">Price</label>
+  <input 
+    type="number" 
+    id="inv_price" 
+    name="inv_price" 
+    placeholder="Enter Vehicle Price" 
+    required 
+    step="0.01"
+    value="<%= typeof inv_price !== 'undefined' ? inv_price : '' %>"
+  >
+
+  <!-- Vehicle Year -->
+  <label for="inv_year">Year</label>
+  <input 
+    type="number" 
+    id="inv_year" 
+    name="inv_year" 
+    placeholder="Enter Vehicle Year" 
+    required 
+    value="<%= typeof inv_year !== 'undefined' ? inv_year : '' %>"
+  >
+
+  <!-- Vehicle Mileage -->
+  <label for="inv_mileage">Mileage</label>
+  <input 
+    type="number" 
+    id="inv_mileage" 
+    name="inv_mileage" 
+    placeholder="Enter Vehicle Mileage" 
+    required 
+    value="<%= typeof inv_mileage !== 'undefined' ? inv_mileage : '' %>"
+  >
+
+  <!-- Vehicle Color -->
+  <label for="inv_color">Color</label>
+  <input 
+    type="text" 
+    id="inv_color" 
+    name="inv_color" 
+    placeholder="Enter Vehicle Color" 
+    required 
+    value="<%= typeof inv_color !== 'undefined' ? inv_color : '' %>"
+  >
+
+  <button type="submit">Add Vehicle</button>
+</form>
