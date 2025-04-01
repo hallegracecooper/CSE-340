@@ -1,41 +1,47 @@
-<!-- views/account/login.ejs -->
+    <!-- views/account/login.ejs -->
 <!-- 
   Title and <h1> both use the title data from the controller.
   This file displays a login form, plus a link to a registration page.
 -->
-    <h1><%= title %></h1>
+<h1><%= title %></h1>
 
+<!-- Flash or message area (optional). 
+     If you're using connect-flash or a similar library, 
+     you might do something like <%- messages() %> 
+     or check for a "message" variable. -->
+<% if (typeof message !== 'undefined') { %>
+  <p class="flash-message"><%= message %></p>
+<% } %>
 
-     <!-- Flash or message area (optional). 
-          If you're using connect-flash or a similar library, 
-          you might do something like <%- messages() %> 
-          or check for a "message" variable. -->
-     <% if (typeof message !== 'undefined') { %>
-       <p class="flash-message"><%= message %></p>
-     <% } %>
-     
-     <!-- Login Form -->
-     <form action="/account/login" method="post" class="login-form">
-       <label for="account_email">Email:</label>
-       <input 
-         type="email" 
-         id="account_email" 
-         name="account_email" 
-         placeholder="Enter your email" 
-         required
-       />
-     
-       <label for="account_password">Password:</label>
-       <input 
-         type="password" 
-         id="account_password" 
-         name="account_password" 
-         placeholder="Enter your password" 
-         required
-       />
-     
-       <button type="submit">LOGIN</button>
-     </form>
-     
-     <!-- Link to sign-up page -->
-     <p>No account? <a href="/account/register">Sign-up</a></p>     
+<!-- Login Form -->
+<form action="/account/login" method="post" class="login-form">
+  <!-- Email Field -->
+  <label for="account_email">Email:</label>
+  <input 
+    type="email" 
+    id="account_email" 
+    name="account_email" 
+    placeholder="Enter your email" 
+    required
+  />
+
+  <!-- Password Field -->
+  <label for="account_password">Password:</label>
+  <!-- Password requirements reminder -->
+  <div class="password-requirements">
+    Password must be at least 12 characters and contain at least 1 number, 1 uppercase letter, and 1 special character.
+  </div>
+  <input 
+    type="password" 
+    id="account_password" 
+    name="account_password" 
+    placeholder="Enter your password" 
+    required
+    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+  />
+
+  <button type="submit">LOGIN</button>
+</form>
+
+<!-- Link to sign-up page -->
+<p>No account? <a href="/account/register">Sign-up</a></p>

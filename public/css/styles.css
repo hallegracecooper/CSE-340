@@ -501,4 +501,11 @@ footer {
   color: #ecf0f1;
 }
 
+.password-requirements {
+  font-size: 0.9em;
+  color: #ecf0f1;
+  margin-bottom: 5px;
+}
+
+
 }
