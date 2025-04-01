@@ -1,4 +1,4 @@
-    <!-- views/account/login.ejs -->
+<!-- views/account/login.ejs -->
 <!-- 
   Title and <h1> both use the title data from the controller.
   This file displays a login form, plus a link to a registration page.
@@ -13,8 +13,17 @@
   <p class="flash-message"><%= message %></p>
 <% } %>
 
+<!-- Display Validation Errors -->
+<% if (errors) { %>
+  <ul class="notice">
+    <% errors.array().forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }); %>
+  </ul>
+<% } %>
+
 <!-- Login Form -->
-<form action="/account/login" method="post" class="login-form">
+<form id="loginForm" class="login-form" action="/account/login" method="post">
   <!-- Email Field -->
   <label for="account_email">Email:</label>
   <input 
@@ -23,6 +32,7 @@
     name="account_email" 
     placeholder="Enter your email" 
     required
+    value="<%= locals.account_email %>"
   />
 
   <!-- Password Field -->
