@@ -2,11 +2,11 @@
 
 <h1>Add New Vehicle</h1>
 
-<!-- Display flash messages from the controller -->
+<!-- Display flash messages returned from the controller -->
 <%- messages() %>
 
-<!-- Display server-side validation errors, if any -->
-<% if (typeof errors !== 'undefined' && errors.array().length > 0) { %>
+<!-- Display server-side validation errors, if any exist -->
+<% if (typeof errors !== 'undefined' && errors.array && errors.array().length > 0) { %>
   <ul class="notice">
     <% errors.array().forEach(function(error) { %>
       <li><%= error.msg %></li>
@@ -19,7 +19,6 @@
   
   <!-- Classification Select List -->
   <label for="classificationList">Classification</label>
-  <!-- The classificationList variable is dynamically built in the controller and passed to the view -->
   <%- classificationList %>
 
   <!-- Vehicle Make -->

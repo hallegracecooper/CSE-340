@@ -507,5 +507,99 @@ footer {
   margin-bottom: 5px;
 }
 
+/* Add this to your styles.css */
+.management-link {
+  color: #3498db; /* A strong blue for contrast */
+  font-weight: bold;
+  text-decoration: underline;
+}
 
+.management-link:hover {
+  color: #2980b9;
+}
+
+/* ===============================
+   Add Classification & Inventory Forms
+   =============================== */
+   form#add-classification-form,
+   form#add-inventory-form {
+     max-width: 600px;
+     margin: 2rem auto;
+     padding: 1rem;
+     background-color: #f9f9f9;
+     border: 1px solid #ccc;
+     border-radius: 8px;
+     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+   }
+   
+   form#add-classification-form h1,
+   form#add-inventory-form h1 {
+     text-align: center;
+     margin-bottom: 1rem;
+     color: #2c3e50;
+   }
+   
+   form#add-classification-form label,
+   form#add-inventory-form label {
+     display: block;
+     margin-top: 1rem;
+     font-weight: bold;
+     color: #2c3e50;
+   }
+   
+   form#add-classification-form input[type="text"],
+   form#add-inventory-form input[type="text"],
+   form#add-inventory-form input[type="number"],
+   form#add-inventory-form textarea,
+   form#add-inventory-form select {
+     width: 100%;
+     padding: 0.5rem;
+     margin-top: 0.5rem;
+     border: 1px solid #ccc;
+     border-radius: 4px;
+     font-size: 1rem;
+   }
+   
+   form#add-inventory-form textarea {
+     resize: vertical;
+     min-height: 100px;
+   }
+   
+   form#add-classification-form button,
+   form#add-inventory-form button {
+     display: block;
+     width: 100%;
+     padding: 0.75rem;
+     margin-top: 1.5rem;
+     background-color: #3498db;
+     color: #fff;
+     border: none;
+     border-radius: 4px;
+     font-size: 1rem;
+     cursor: pointer;
+     transition: background-color 0.3s ease;
+   }
+   
+   form#add-classification-form button:hover,
+   form#add-inventory-form button:hover {
+     background-color: #2980b9;
+   }
+   
+   .notice {
+     background-color: #f39c12;
+     color: #fff;
+     padding: 0.5rem;
+     margin: 1rem auto;
+     max-width: 600px;
+     border-radius: 4px;
+     list-style-type: none;
+     text-align: center;
+   }
+   
+   form p {
+     font-size: 0.9rem;
+     color: #333;
+     margin-top: 0.5rem;
+   }
+   
 }
