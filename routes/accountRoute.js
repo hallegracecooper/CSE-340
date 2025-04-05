@@ -27,9 +27,9 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 );
 
-// New route: Deliver the account management view
 router.get(
   "/",
+  utilities.checkLogin,
   utilities.handleErrors(accountController.buildAccountManagement)
 );
 

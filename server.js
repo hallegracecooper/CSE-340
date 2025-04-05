@@ -43,6 +43,9 @@ app.use(function(req, res, next) {
 // *** NEW: Use cookie-parser middleware ***
 app.use(cookieParser());
 
+// Apply JWT checking middleware BEFORE mounting the account route
+app.use(utilities.checkJWTToken);
+
 // Set the view engine and views folder
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -70,8 +73,6 @@ app.use("/account", accountRoute);
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'});
 });
-
-app.use(utilities.checkJWTToken);
 
 /* ***********************
  * Express Error Handler
