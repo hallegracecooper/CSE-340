@@ -1,4 +1,6 @@
 const invModel = require("../models/inventory-model");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const Util = {};
 
 /* ************************
@@ -54,8 +56,7 @@ Util.buildClassificationGrid = async function (data) {
 
 /* ****************************************
  * Middleware For Handling Errors
- * Wrap other function in this for
- * General Error Handling
+ * Wrap other functions in this for general error handling
  **************************************** */
 Util.handleErrors = fn => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
@@ -64,13 +65,11 @@ Util.handleErrors = fn => (req, res, next) =>
  * Build Vehicle Detail HTML
  **************************************** */
 Util.buildVehicleDetailHTML = async function (vehicle) {
-  // Format price and mileage using toLocaleString
   const priceFormatted = Number(vehicle.inv_price)
     .toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   const mileageFormatted = Number(vehicle.inv_mileage)
     .toLocaleString('en-US');
 
-  // Return the HTML string (adjust keys as needed)
   return `
     <div class="vehicle-detail">
       <h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>
@@ -106,6 +105,31 @@ Util.buildClassificationList = async function (classification_id = null) {
   });
   classificationList += "</select>";
   return classificationList;
+};
+
+
+/* ****************************************
+ * Middleware to check token validity
+ **************************************** */
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+        if (err) {
+          req.flash("notice", "Please log in");
+          res.clearCookie("jwt");
+          return res.redirect("/account/login");
+        }
+        res.locals.accountData = accountData;
+        res.locals.loggedin = 1;
+        next();
+      }
+    );
+  } else {
+    next();
+  }
 };
 
 module.exports = Util;

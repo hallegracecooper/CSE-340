@@ -3,7 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const utilities = require("../utilities");
-const accountController = require("../controllers/accountController"); // build this later
+const accountController = require("../controllers/accountController");
 const regValidate = require('../utilities/account-validation');
 
 // GET route for the login view
@@ -19,14 +19,18 @@ router.post(
   utilities.handleErrors(accountController.registerAccount)
 );
 
-// Process the login attempt
+// Process the login attempt (already updated previously)
 router.post(
   "/login",
   regValidate.loginRules(),
   regValidate.checkLoginData,
-  (req, res) => {
-    res.status(200).send('login process')
-  }
+  utilities.handleErrors(accountController.accountLogin)
+);
+
+// New route: Deliver the account management view
+router.get(
+  "/",
+  utilities.handleErrors(accountController.buildAccountManagement)
 );
 
 module.exports = router;

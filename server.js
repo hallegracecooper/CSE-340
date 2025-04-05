@@ -12,6 +12,8 @@ const pool = require('./database/');
 const accountRoute = require("./routes/accountRoute");
 const bodyParser = require("body-parser");
 
+// *** NEW: Require the cookie-parser package ***
+const cookieParser = require("cookie-parser");
 
 // Set the port
 const port = process.env.PORT || 3000;
@@ -19,6 +21,7 @@ const port = process.env.PORT || 3000;
 /* ***********************
  * Middleware
  ************************/
+// Session middleware
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
     createTableIfMissing: true,
@@ -36,6 +39,9 @@ app.use(function(req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
   next();
 });
+
+// *** NEW: Use cookie-parser middleware ***
+app.use(cookieParser());
 
 // Set the view engine and views folder
 app.set('view engine', 'ejs');
@@ -65,6 +71,7 @@ app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'});
 });
 
+app.use(utilities.checkJWTToken);
 
 /* ***********************
  * Express Error Handler
