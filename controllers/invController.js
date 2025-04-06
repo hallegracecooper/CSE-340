@@ -11,6 +11,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
   const data = await invModel.getInventoryByClassificationId(classification_id);
   const grid = await utilities.buildClassificationGrid(data);
   let nav = await utilities.getNav();
+  const classificationSelect = await utilities.buildClassificationList();
   const className = data[0].classification_name;
   res.render("./inventory/classification", {
     title: className + " vehicles",
@@ -66,9 +67,16 @@ invCont.managementView = async function (req, res, next) {
   try {
     // Retrieve navigation and set page title
     const nav = await utilities.getNav();
+    
+    // -------------------------------------------------------
+    // Build the classification select list to be used in the view
+    const classificationSelect = await utilities.buildClassificationList();
+    // -------------------------------------------------------
+    
     res.render("inventory/management", {
       title: "Inventory Management",
-      nav
+      nav,
+      classificationSelect
       // Flash messages will be displayed in the view using <%- messages() %>
     });
   } catch (error) {
@@ -193,13 +201,130 @@ invCont.addInventory = async function (req, res, next) {
         inv_thumbnail,
         inv_price,
         inv_year,
-        inv_mileage,
+        inv_mile,
         inv_color,
         errors: [{ msg: "Failed to add new vehicle." }]
       });
     }
   } catch (error) {
     next(error);
+  }
+};
+
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ *************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id);
+  const invData = await invModel.getInventoryByClassificationId(classification_id);
+  if (invData[0].inv_id) {
+    return res.json(invData);
+  } else {
+    next(new Error("No data returned"));
+  }
+};
+
+/* ***************************
+ *  Build edit inventory view
+ *************************** */
+invCont.editInventoryView = async function (req, res, next) {
+  // Collect and convert inventory id from the URL
+  const inv_id = parseInt(req.params.inv_id);
+  // Build the navigation
+  let nav = await utilities.getNav();
+  // Retrieve the data for the specific inventory item using getVehicleById
+const data = await invModel.getVehicleById(inv_id);
+if (!data.rowCount) {
+  return next(new Error("Vehicle not found"));
+}
+const itemData = data.rows[0];
+
+  // Build the classification select list with the item's classification pre-selected
+  const classificationSelect = await utilities.buildClassificationList(itemData.classification_id);
+  // Create a variable holding the vehicle's full name (Make and Model)
+  const itemName = `${itemData.inv_make} ${itemData.inv_model}`;
+  
+  // Render the edit inventory view with the retrieved data
+  res.render("./inventory/edit-inventory", {
+    title: "Edit " + itemName,
+    nav,
+    classificationSelect: classificationSelect,
+    errors: null,
+    inv_id: itemData.inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_description: itemData.inv_description,
+    inv_image: itemData.inv_image,
+    inv_thumbnail: itemData.inv_thumbnail,
+    inv_price: itemData.inv_price,
+    inv_miles: itemData.inv_miles,
+    inv_color: itemData.inv_color,
+    classification_id: itemData.classification_id
+  });
+};
+
+/* ***************************
+ *  Update Inventory Data
+ *************************** */
+invCont.updateInventory = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  const {
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_year,
+    inv_mileage,  // Changed from inv_miles to inv_mileage to match the form field name
+    inv_color,
+    classification_id,
+  } = req.body;
+
+  // Call the model function to update the inventory item,
+  // passing inv_mileage as the mileage parameter
+  const updateResult = await invModel.updateInventory(
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_year,
+    inv_mileage,  // Pass the correct mileage value here
+    inv_color,
+    classification_id
+  );
+
+  if (updateResult) {
+    const itemName = updateResult.inv_make + " " + updateResult.inv_model;
+    req.flash("notice", `The ${itemName} was successfully updated.`);
+    res.redirect("/inv/");
+  } else {
+    // On failure, rebuild the classification select list and re-render the edit view with sticky data.
+    const classificationSelect = await utilities.buildClassificationList(classification_id);
+    const itemName = `${inv_make} ${inv_model}`;
+    req.flash("notice", "Sorry, the update failed.");
+    res.status(501).render("inventory/edit-inventory", {
+      title: "Edit " + itemName,
+      nav,
+      classificationSelect: classificationSelect,
+      errors: null,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_mileage,  // Pass the correct mileage value for sticky data
+      inv_color,
+      classification_id,
+    });
   }
 };
 

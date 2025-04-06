@@ -3,6 +3,7 @@ const express = require("express");
 const router = new express.Router(); 
 const invController = require("../controllers/invController");
 const utilities = require("../utilities"); // Import the utilities module
+const inventoryValidate = require("../utilities/inventory-validation"); // Import validation middleware
 
 // Route to build inventory by classification view (with error handling)
 router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
@@ -30,5 +31,17 @@ router.get("/add-inventory", utilities.handleErrors(invController.buildAddInvent
 // Route to process new inventory addition (POST)
 // Ensure you have implemented invModel.addInventory in your model
 router.post("/add-inventory", utilities.handleErrors(invController.addInventory));
+
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON));
+
+// Route to build the edit inventory view
+router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView));
+
+// Route to process inventory updates (update inventory information)
+router.post("/update/", 
+  inventoryValidate.newInventoryRules(), 
+  inventoryValidate.checkUpdateData, 
+  utilities.handleErrors(invController.updateInventory)
+);
 
 module.exports = router;

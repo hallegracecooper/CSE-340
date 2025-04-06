@@ -16,3 +16,18 @@
     </li>
   </ul>
 </nav>
+
+<!-- New Heading for Inventory Management -->
+<h2>Manage Inventory</h2>
+
+<!-- Instructional Paragraph -->
+<p>Select a classification from the list to see the items belonging to that classification.</p>
+
+<!-- Display the Classification Select List -->
+<%- classificationSelect %>
+
+<!-- Empty table to display inventory items dynamically -->
+<table id="inventoryDisplay"></table>
+
+<!-- Message for users with JavaScript disabled -->
+<script src="../../js/inventory.js"></script>
