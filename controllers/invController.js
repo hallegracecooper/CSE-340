@@ -7,17 +7,32 @@ const invCont = {};
  *  Build inventory by classification view
  *************************** */
 invCont.buildByClassificationId = async function (req, res, next) {
-  const classification_id = req.params.classificationId;
-  const data = await invModel.getInventoryByClassificationId(classification_id);
-  const grid = await utilities.buildClassificationGrid(data);
-  let nav = await utilities.getNav();
-  const classificationSelect = await utilities.buildClassificationList();
-  const className = data[0].classification_name;
-  res.render("./inventory/classification", {
-    title: className + " vehicles",
-    nav,
-    grid,
-  });
+  try {
+    const classification_id = req.params.classificationId;
+    const data = await invModel.getInventoryByClassificationId(classification_id);
+    let nav = await utilities.getNav();
+
+    // Check if any vehicles were found for the classification
+    if (data && data.length > 0) {
+      const grid = await utilities.buildClassificationGrid(data);
+      const className = data[0].classification_name;
+      res.render("./inventory/classification", {
+        title: className + " vehicles",
+        nav,
+        grid,
+      });
+    } else {
+      // No vehicles found – flash a notice and render with an empty grid
+      req.flash("notice", "Sorry, no matching vehicles could be found.");
+      res.render("./inventory/classification", {
+        title: "Inventory",
+        nav,
+        grid: ""
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
 };
 
 /* ***************************
@@ -27,10 +42,10 @@ invCont.buildVehicleDetail = async function (req, res, next) {
   try {
     // Retrieve the inventory id from the URL parameters
     const inv_id = req.params.inv_id;
-    
+
     // Call the model function to get the vehicle details by id
     const data = await invModel.getVehicleById(inv_id);
-    
+
     // If no vehicle is found, render an error view with a 404 status
     if (!data.rowCount) {
       return res.status(404).render("error", { 
@@ -39,16 +54,16 @@ invCont.buildVehicleDetail = async function (req, res, next) {
         errorMessage: "Vehicle not found" 
       });
     }
-    
+
     // Extract the vehicle object from the result rows
     const vehicle = data.rows[0];
-    
+
     // Build the HTML snippet for the vehicle detail using a utility function
     const detailHTML = await utilities.buildVehicleDetailHTML(vehicle);
-    
+
     // Retrieve the navigation HTML
     const nav = await utilities.getNav();
-    
+
     // Render the detail view, passing the vehicle's make and model as the title
     res.render("./inventory/detail", {
       title: `${vehicle.inv_make} ${vehicle.inv_model}`,
@@ -67,12 +82,12 @@ invCont.managementView = async function (req, res, next) {
   try {
     // Retrieve navigation and set page title
     const nav = await utilities.getNav();
-    
+
     // -------------------------------------------------------
     // Build the classification select list to be used in the view
     const classificationSelect = await utilities.buildClassificationList();
     // -------------------------------------------------------
-    
+
     res.render("inventory/management", {
       title: "Inventory Management",
       nav,
@@ -106,14 +121,14 @@ invCont.addClassification = async function (req, res, next) {
   try {
     // Extract the classification name from the request body
     const { classification_name } = req.body;
-    
+
     // Call the model function to insert the new classification
     const result = await invModel.addClassification(classification_name);
-    
+
     if (result.rowCount) {
       // If insertion was successful, set a success flash message
       req.flash("notice", `New classification "${classification_name}" added successfully.`);
-      
+
       // Rebuild navigation (to include the new classification) and render the management view
       const nav = await utilities.getNav();
       res.render("inventory/management", {
@@ -144,7 +159,7 @@ invCont.buildAddInventory = async function (req, res, next) {
     // Get the navigation bar and classification list (pre-built)
     const nav = await utilities.getNav();
     const classificationList = await utilities.buildClassificationList();
-    
+
     res.render("inventory/add-inventory", {
       title: "Add New Vehicle",
       nav,
@@ -173,10 +188,10 @@ invCont.addInventory = async function (req, res, next) {
       inv_mileage,
       inv_color
     } = req.body;
-    
+
     // Call the model function to insert the new vehicle into the inventory
     const result = await invModel.addInventory(req.body);
-    
+
     if (result.rowCount) {
       // On success, set a flash message and render the management view with updated nav
       req.flash("notice", "New vehicle added successfully.");
@@ -217,7 +232,7 @@ invCont.addInventory = async function (req, res, next) {
 invCont.getInventoryJSON = async (req, res, next) => {
   const classification_id = parseInt(req.params.classification_id);
   const invData = await invModel.getInventoryByClassificationId(classification_id);
-  if (invData[0].inv_id) {
+  if (invData[0] && invData[0].inv_id) {
     return res.json(invData);
   } else {
     next(new Error("No data returned"));
@@ -233,17 +248,17 @@ invCont.editInventoryView = async function (req, res, next) {
   // Build the navigation
   let nav = await utilities.getNav();
   // Retrieve the data for the specific inventory item using getVehicleById
-const data = await invModel.getVehicleById(inv_id);
-if (!data.rowCount) {
-  return next(new Error("Vehicle not found"));
-}
-const itemData = data.rows[0];
+  const data = await invModel.getVehicleById(inv_id);
+  if (!data.rowCount) {
+    return next(new Error("Vehicle not found"));
+  }
+  const itemData = data.rows[0];
 
   // Build the classification select list with the item's classification pre-selected
   const classificationSelect = await utilities.buildClassificationList(itemData.classification_id);
   // Create a variable holding the vehicle's full name (Make and Model)
   const itemName = `${itemData.inv_make} ${itemData.inv_model}`;
-  
+
   // Render the edit inventory view with the retrieved data
   res.render("./inventory/edit-inventory", {
     title: "Edit " + itemName,
@@ -334,21 +349,21 @@ invCont.updateInventory = async function (req, res, next) {
 invCont.deleteInventoryView = async function (req, res, next) {
   // Collect the inv_id from the URL parameters and convert to an integer
   const inv_id = parseInt(req.params.inv_id);
-  
+
   // Build the navigation for the new view
   let nav = await utilities.getNav();
-  
+
   // Get the data for the inventory item from the database
   const data = await invModel.getVehicleById(inv_id);
-  
+
   if (!data.rowCount) {
     return next(new Error("Vehicle not found"));
   }
-  
+
   // Build a name variable to hold the inventory item's make and model
   const itemData = data.rows[0];
   const itemName = `${itemData.inv_make} ${itemData.inv_model}`;
-  
+
   // Render the delete confirmation view and pass the appropriate data
   res.render("./inventory/delete-confirm", {
     title: "Delete " + itemName,
@@ -368,14 +383,13 @@ invCont.deleteInventoryView = async function (req, res, next) {
 invCont.deleteInventory = async function (req, res, next) {
   // Build the navigation for redirection
   let nav = await utilities.getNav();
-  
+
   // Collect the inv_id from the request body and convert it to an integer
   const inv_id = parseInt(req.body.inv_id);
-  
+
   // Pass the inv_id value to the model-based function to delete the inventory item
-  // (You will build the deleteInventory model function in a subsequent step.)
   const deleteResult = await invModel.deleteInventory(inv_id);
-  
+
   // Check the delete result and return the appropriate flash message
   if (deleteResult) {
     req.flash("notice", "The vehicle was successfully deleted.");
@@ -386,6 +400,5 @@ invCont.deleteInventory = async function (req, res, next) {
     res.redirect("/inv/delete/" + inv_id);
   }
 };
-
 
 module.exports = invCont;

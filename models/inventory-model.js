@@ -4,7 +4,11 @@ const pool = require("../database/")
  *  Get all classification data
  *************************** */
 async function getClassifications() {
-  return await pool.query("SELECT * FROM public.classification ORDER BY classification_name");
+  // Group by classification_name so that if there are multiple rows with the same classification_name,
+  // only one (the one with the lowest classification_id) is returned.
+  return await pool.query(
+    "SELECT MIN(classification_id) AS classification_id, classification_name FROM public.classification GROUP BY classification_name ORDER BY classification_name"
+  );
 }
 
 /* ***************************

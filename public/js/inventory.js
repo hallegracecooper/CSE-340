@@ -1,9 +1,11 @@
 (function() {
-    'use strict';
-  
-    // Get a reference to the classification select element by its ID
-    let classificationList = document.querySelector("#classificationList");
-  
+  'use strict';
+
+  // Get a reference to the classification select element by its ID
+  let classificationList = document.querySelector("#classificationList");
+
+  // Check if the element exists before attaching the event listener
+  if (classificationList) {
     // Attach an event listener that triggers when the select element changes
     classificationList.addEventListener("change", function () {
       // Capture the selected classification ID
@@ -30,7 +32,7 @@
         .catch(function (error) {
           console.log('There was a problem: ', error.message);
         });
-    
+      
       // Build inventory items into HTML table components and inject into DOM 
       function buildInventoryList(data) { 
         let inventoryDisplay = document.getElementById("inventoryDisplay"); 
@@ -53,4 +55,5 @@
       }
       
     });
-  })();  
+  }
+})();
