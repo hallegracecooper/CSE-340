@@ -328,4 +328,64 @@ invCont.updateInventory = async function (req, res, next) {
   }
 };
 
+/* ***************************
+ *  Build delete confirmation view for inventory
+ *************************** */
+invCont.deleteInventoryView = async function (req, res, next) {
+  // Collect the inv_id from the URL parameters and convert to an integer
+  const inv_id = parseInt(req.params.inv_id);
+  
+  // Build the navigation for the new view
+  let nav = await utilities.getNav();
+  
+  // Get the data for the inventory item from the database
+  const data = await invModel.getVehicleById(inv_id);
+  
+  if (!data.rowCount) {
+    return next(new Error("Vehicle not found"));
+  }
+  
+  // Build a name variable to hold the inventory item's make and model
+  const itemData = data.rows[0];
+  const itemName = `${itemData.inv_make} ${itemData.inv_model}`;
+  
+  // Render the delete confirmation view and pass the appropriate data
+  res.render("./inventory/delete-confirm", {
+    title: "Delete " + itemName,
+    nav,
+    errors: null,
+    inv_id: itemData.inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_price: itemData.inv_price
+  });
+};
+
+/* ***************************
+ *  Process Inventory Delete
+ *************************** */
+invCont.deleteInventory = async function (req, res, next) {
+  // Build the navigation for redirection
+  let nav = await utilities.getNav();
+  
+  // Collect the inv_id from the request body and convert it to an integer
+  const inv_id = parseInt(req.body.inv_id);
+  
+  // Pass the inv_id value to the model-based function to delete the inventory item
+  // (You will build the deleteInventory model function in a subsequent step.)
+  const deleteResult = await invModel.deleteInventory(inv_id);
+  
+  // Check the delete result and return the appropriate flash message
+  if (deleteResult) {
+    req.flash("notice", "The vehicle was successfully deleted.");
+    res.redirect("/inv/");
+  } else {
+    req.flash("notice", "Sorry, the delete failed.");
+    // Redirect back to the delete confirmation view for the same inventory item
+    res.redirect("/inv/delete/" + inv_id);
+  }
+};
+
+
 module.exports = invCont;
