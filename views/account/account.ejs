@@ -5,12 +5,20 @@
 <!-- Greet the client using their first name -->
 <h2>Welcome <%= locals.accountData.account_firstname %></h2>
 
-<!-- Link to update account information (visible to all clients) -->
-<p>
-  <a href="/account/update/<%= locals.accountData.account_id %>" title="Update Account Information">
-    Update Account Information
-  </a>
-</p>
+<div class="account-links">
+  <!-- Link to update account information -->
+  <p>
+    <a href="/account/update/<%= locals.accountData.account_id %>" title="Update Account Information">
+      Update Account Information
+    </a>
+  </p>
+  <!-- New link to view favorites -->
+  <p>
+    <a href="/account/favorites" title="My Favorites">
+      My Favorites
+    </a>
+  </p>
+</div>
 
 <!-- Only for Employee or Admin: Include Inventory Management section -->
 <% if (locals.accountData.account_type === "Employee" || locals.accountData.account_type === "Admin") { %>

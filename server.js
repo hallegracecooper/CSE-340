@@ -46,6 +46,7 @@ app.use(cookieParser());
 // Apply JWT checking middleware BEFORE mounting the account route
 app.use(utilities.checkJWTToken);
 
+
 // Set the view engine and views folder
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));

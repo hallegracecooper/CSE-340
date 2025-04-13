@@ -5,6 +5,7 @@ const router = express.Router();
 const utilities = require("../utilities");
 const accountController = require("../controllers/accountController");
 const regValidate = require('../utilities/account-validation');
+const favoriteController = require("../controllers/favoritesController");
 
 // GET route for the login view
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
@@ -52,6 +53,16 @@ router.post(
   utilities.checkLogin,
   utilities.handleErrors(accountController.updateAccountPassword)
 );
+
+// Favorites Routes
+// Route to display the current user's favorites
+router.get("/favorites", utilities.checkLogin, utilities.handleErrors(favoriteController.viewFavorites));
+
+// Route to add a favorite (expects POST with {inv_id} in the body)
+router.post("/favorites/add", utilities.checkLogin, utilities.handleErrors(favoriteController.addFavorite));
+
+// Route to remove a favorite (expects POST with {inv_id} in the body)
+router.post("/favorites/remove", utilities.checkLogin, utilities.handleErrors(favoriteController.removeFavorite));
 
 // Route for logout (Task 6)
 router.get("/logout", utilities.handleErrors(accountController.accountLogout));

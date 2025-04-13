@@ -64,11 +64,12 @@ invCont.buildVehicleDetail = async function (req, res, next) {
     // Retrieve the navigation HTML
     const nav = await utilities.getNav();
 
-    // Render the detail view, passing the vehicle's make and model as the title
+    // Render the detail view, passing the vehicle along with other variables
     res.render("./inventory/detail", {
       title: `${vehicle.inv_make} ${vehicle.inv_model}`,
       nav,
-      detailHTML
+      detailHTML,
+      vehicle  // Pass the vehicle object so the view has access to vehicle.inv_id
     });
   } catch (error) {
     next(error);

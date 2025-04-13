@@ -2,3 +2,9 @@
 <h1><%= title %></h1>
 <%- detailHTML %>
 
+<!-- Add to Favorites Form -->
+<form action="/account/favorites/add" method="POST" class="favorite-form">
+    <!-- Uses the vehicle object passed from the controller -->
+    <input type="hidden" name="inv_id" value="<%= vehicle.inv_id %>" />
+    <button type="submit">Add to Favorites</button>
+</form>

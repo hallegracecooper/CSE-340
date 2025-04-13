@@ -1,0 +1,24 @@
+<!-- views/account/favorites.ejs -->
+
+<div class="favorites-container">
+    <h1>My Favorites</h1>
+  
+    <% if (favorites && favorites.length > 0) { %>
+      <ul class="favorites-list">
+        <% favorites.forEach(function(fav) { %>
+          <li class="favorite-item">
+            <!-- Display inventory details, adjust field names as needed -->
+            <h3><%= fav.inv_make && fav.inv_model ? fav.inv_make + ' ' + fav.inv_model : "Vehicle Name" %></h3>
+            <p><%= fav.inv_description || "No description available." %></p>
+            <!-- Form to remove the favorite -->
+            <form action="/account/favorites/remove" method="POST">
+              <input type="hidden" name="inv_id" value="<%= fav.inv_id %>" />
+              <button type="submit">Remove from Favorites</button>
+            </form>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>You have not added any favorites yet.</p>
+    <% } %>
+  </div>  

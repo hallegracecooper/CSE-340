@@ -882,4 +882,118 @@ footer {
   border-radius: 4px;
   text-align: center;
 }
+
+/* =============================
+   Favorites Page Styles
+============================= */
+
+.favorites-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.favorites-container h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.favorites-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Each favorite item styling */
+.favorite-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;  /* Increased spacing between items */
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  justify-content: center;
+}
+
+.favorite-item h3 {
+  margin-bottom: 0.75rem;  /* More space below the title */
+  color: #2c3e50;
+  font-size: 1.25rem;
+}
+
+.favorite-item p {
+  margin-bottom: 1rem;     /* More space below the description */
+  color: #555;
+  line-height: 1.5;
+}
+
+/* Button Styles for Favorites */
+
+/* Remove from Favorites Button */
+.favorite-item form button {
+  padding: 0.5rem 1rem;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.favorite-item form button:hover {
+  background-color: #c0392b;
+}
+
+/* Add to Favorites Button on Detail Page */
+.favorite-form button {
+  padding: 0.75rem 1.25rem;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.favorite-form button:hover {
+  background-color: #2980b9;
+}
+
+/* =============================
+   Account Management Page Styles
+============================= */
+
+.account-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.account-links p {
+  margin: 0;
+}
+
+.account-links a {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #3498db;  /* Blue background */
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+.account-links a:hover {
+  background-color: #2980b9;
+}
+
 }
