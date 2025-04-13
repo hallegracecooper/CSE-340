@@ -801,4 +801,85 @@ footer {
 .edit-form-container button:hover {
   background-color: #2980b9;
 }
+
+/* ===============================
+   Update Account Page Styles
+   =============================== */
+
+/* Container for both update and change password sections */
+#account-update,
+#change-password {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Headings within each section */
+#account-update h2,
+#change-password h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+/* Form group styling */
+#account-update form div,
+#change-password form div {
+  margin-bottom: 1rem;
+}
+
+/* Labels for the forms */
+#account-update form label,
+#change-password form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+/* Input fields styling */
+#account-update form input,
+#change-password form input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* Button styling for both forms */
+#account-update form button,
+#change-password form button {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #3498db;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+/* Button hover effect */
+#account-update form button:hover,
+#change-password form button:hover {
+  background-color: #2980b9;
+}
+
+/* Style for flash messages or validation errors (if using .notice) */
+.notice {
+  background-color: #f39c12;
+  color: #fff;
+  padding: 0.75rem;
+  margin: 1rem auto;
+  max-width: 600px;
+  border-radius: 4px;
+  text-align: center;
+}
 }

@@ -14,6 +14,8 @@ async function buildLogin(req, res, next) {
   res.render("account/login", {
     title: "Login",
     nav,
+    errors: null,  // Ensure errors is defined
+    account_email: ""  // Optionally initialize account_email
   });
 }
 
@@ -128,5 +130,66 @@ async function buildAccountManagement(req, res, next) {
   });
 }
 
+/* ****************************************
+ *  Deliver Account Update view (Task 4)
+ * *************************************** */
+async function buildUpdateAccount(req, res, next) {
+  let nav = await utilities.getNav();
+  res.render("account/update-account", {
+    title: "Update Account Information",
+    nav,
+    errors: null
+  });
+}
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement };
+/* ****************************************
+ *  Process account information update (Task 4)
+ * *************************************** */
+async function updateAccount(req, res, next) {
+  let nav = await utilities.getNav();
+  const { account_id, account_firstname, account_lastname, account_email } = req.body;
+  
+  // TODO: Update the account info in the database using your account model.
+  // e.g., const updateResult = await accountModel.updateAccount(account_id, account_firstname, account_lastname, account_email);
+  
+  req.flash("notice", "Account information updated successfully.");
+  res.redirect("/account/");
+}
+
+/* ****************************************
+ *  Process password change update (Task 4)
+ * *************************************** */
+async function updateAccountPassword(req, res, next) {
+  let nav = await utilities.getNav();
+  const { account_id, account_password, confirm_password } = req.body;
+  
+  if (account_password !== confirm_password) {
+    req.flash("notice", "Passwords do not match.");
+    return res.redirect(`/account/update/${account_id}`);
+  }
+  
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hashSync(account_password, 10);
+  } catch (error) {
+    req.flash("notice", "Error updating password.");
+    return res.redirect(`/account/update/${account_id}`);
+  }
+  
+  // TODO: Update the password in the database using your account model.
+  // e.g., const updatePasswordResult = await accountModel.updateAccountPassword(account_id, hashedPassword);
+  
+  req.flash("notice", "Password updated successfully.");
+  res.redirect("/account/");
+}
+
+module.exports = { 
+  buildLogin, 
+  buildRegister, 
+  registerAccount, 
+  accountLogin, 
+  buildAccountManagement,
+  buildUpdateAccount,        // New for displaying the update view
+  updateAccount,             // New for processing account info update
+  updateAccountPassword      // New for processing password change
+};

@@ -5,7 +5,7 @@
 <%- messages() %>
 
 <!-- Display Validation Errors if errors variable exists and has content -->
-<% if (typeof errors !== 'undefined' && errors.array && errors.array().length > 0) { %>
+<% if (errors && typeof errors.array === 'function' && errors.array().length > 0) { %>
   <ul class="notice">
     <% errors.array().forEach(error => { %>
       <li><%= error.msg %></li>

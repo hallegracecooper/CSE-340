@@ -33,4 +33,15 @@ router.get(
   utilities.handleErrors(accountController.buildAccountManagement)
 );
 
+// routes/accountRoute.js
+
+// Route to display account update view
+router.get("/update/:id", utilities.checkLogin, utilities.handleErrors(accountController.buildUpdateAccount));
+
+// Route to process account update (update names and email)
+router.post("/update", utilities.checkLogin, utilities.handleErrors(accountController.updateAccount));
+
+// Route to process password change
+router.post("/update-password", utilities.checkLogin, utilities.handleErrors(accountController.updateAccountPassword));
+
 module.exports = router;
