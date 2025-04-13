@@ -77,9 +77,47 @@ validate.loginRules = () => {
   ];
 };
 
-/* ******************************
- * Check registration data and return errors or continue to registration
- * ***************************** */
+/* **********************************
+ *  Update Account Information Validation Rules
+ * ********************************* */
+validate.updateAccountRules = () => {
+  return [
+    body("account_firstname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Please provide a first name."),
+
+    body("account_lastname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Please provide a last name."),
+
+    body("account_email")
+      .trim()
+      .escape()
+      .notEmpty()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email is required.")
+      .custom(async (account_email, { req }) => {
+         const account_id = req.body.account_id;
+         const existingAccount = await accountModel.getAccountById(account_id);
+         if (existingAccount && existingAccount.account_email !== account_email) {
+           const emailExists = await accountModel.checkExistingEmail(account_email);
+           if (emailExists) {
+             throw new Error("Email already exists. Please use a different email.");
+           }
+         }
+         return true;
+      })
+  ];
+};
+
+/* **********************************
+ *  Check registration data and return errors or continue to registration
+ * ********************************* */
 validate.checkRegData = async (req, res, next) => {
   const { account_firstname, account_lastname, account_email } = req.body;
   let errors = validationResult(req);
@@ -98,9 +136,9 @@ validate.checkRegData = async (req, res, next) => {
   next();
 };
 
-/* ******************************
- * Check login data and return errors or continue to login process
- * ***************************** */
+/* **********************************
+ *  Check login data and return errors or continue to login process
+ * ********************************* */
 validate.checkLoginData = async (req, res, next) => {
   const { account_email } = req.body;
   let errors = validationResult(req);
@@ -111,6 +149,27 @@ validate.checkLoginData = async (req, res, next) => {
       title: "Login",
       nav,
       account_email,  // This makes the email field sticky
+    });
+    return;
+  }
+  next();
+};
+
+/* **********************************
+ *  Check update account data and return errors or continue to update process
+ * ********************************* */
+validate.checkUpdateData = async (req, res, next) => {
+  const { account_firstname, account_lastname, account_email } = req.body;
+  let errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    res.render("account/update-account", {
+      errors,
+      title: "Update Account Information",
+      nav,
+      account_firstname,
+      account_lastname,
+      account_email,
     });
     return;
   }
